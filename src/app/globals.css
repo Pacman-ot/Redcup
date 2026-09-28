@@ -1,0 +1,345 @@
+@import "tailwindcss";
+
+/* Runtime colour tokens (swap per theme below). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-red: var(--red);
+  --color-red-ink: var(--red-ink);
+  --color-red-tint: var(--red-tint);
+  --color-on-red: var(--on-red);
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Static tokens.
+   Shape rule for the whole site: controls (buttons, tabs, chips, inputs) are
+   full pills; containers (photos, panels, rows, cards) use --radius-box;
+   avatars are circles. Full-bleed sections are square to the viewport. */
+@theme {
+  --radius-box: 1.25rem;
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+  --bg: #f4f3f1;
+  --surface: #fcfbfa;
+  --surface-2: #eae8e4;
+  --ink: #161413;
+  --muted: #5f5a56;
+  --line: rgb(22 20 19 / 0.1);
+  --red: #d42a20;
+  --red-ink: #d42a20;
+  --red-tint: rgb(212 42 32 / 0.09);
+  --on-red: #fff8f6;
+  --shadow: 0 30px 60px -32px rgb(90 40 30 / 0.4);
+  --scrim: linear-gradient(90deg, rgb(244 243 241 / 0.97) 0%, rgb(244 243 241 / 0.88) 42%, rgb(244 243 241 / 0) 80%);
+  --scrim-mobile: linear-gradient(0deg, rgb(244 243 241 / 0.97) 0%, rgb(244 243 241 / 0.9) 55%, rgb(244 243 241 / 0.2) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #110f0e;
+    --surface: #1b1817;
+    --surface-2: #26221f;
+    --ink: #f4f1ee;
+    --muted: #a8a19c;
+    --line: rgb(244 241 238 / 0.1);
+    --red: #d42a20;
+    --red-ink: #ee6457;
+    --red-tint: rgb(238 100 87 / 0.13);
+    --on-red: #fff8f6;
+    --shadow: 0 30px 60px -30px rgb(0 0 0 / 0.85);
+    --scrim: linear-gradient(90deg, rgb(17 15 14 / 0.95) 0%, rgb(17 15 14 / 0.82) 42%, rgb(17 15 14 / 0) 80%);
+    --scrim-mobile: linear-gradient(0deg, rgb(17 15 14 / 0.96) 0%, rgb(17 15 14 / 0.86) 55%, rgb(17 15 14 / 0.2) 100%);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--red);
+    color: var(--on-red);
+  }
+  :focus-visible {
+    outline: 2px solid var(--red-ink);
+    outline-offset: 3px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (max-width: 767px) {
+    .wrap {
+      padding-inline: 1rem;
+    }
+  }
+
+  /* Type scale: Archivo, expanded widths for display, normal width for text. */
+  .display {
+    font-stretch: 118%;
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+  }
+  .h2 {
+    font-stretch: 114%;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    font-size: clamp(2rem, 3.6vw, 3.25rem);
+  }
+  .h3 {
+    font-stretch: 106%;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-ink);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    height: 3rem;
+    padding-inline: 1.5rem;
+    border-radius: 9999px;
+    font-weight: 650;
+    font-size: 1rem;
+    line-height: 1;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      transform 0.35s var(--ease-snap),
+      background-color 0.25s,
+      border-color 0.25s,
+      box-shadow 0.35s var(--ease-snap),
+      color 0.25s;
+  }
+  .btn:active {
+    transform: translateY(1px) scale(0.98);
+  }
+  .btn-primary {
+    background: var(--red);
+    color: var(--on-red);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -14px var(--red);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: color-mix(in srgb, var(--ink) 28%, transparent);
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+  }
+  .btn-quiet {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+  .btn-quiet:hover {
+    transform: translateY(-2px);
+  }
+  .btn-sm {
+    height: 2.5rem;
+    padding-inline: 1.125rem;
+    font-size: 0.9375rem;
+  }
+  .btn-lg {
+    height: 3.5rem;
+    padding-inline: 1.875rem;
+    font-size: 1.0625rem;
+  }
+  .btn[disabled],
+  .btn[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 2.25rem;
+    padding-inline: 0.95rem;
+    border-radius: 9999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.875rem;
+    font-weight: 550;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.25s,
+      border-color 0.25s,
+      color 0.25s;
+  }
+  .chip:hover {
+    color: var(--ink);
+    border-color: color-mix(in srgb, var(--ink) 35%, transparent);
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-checked="true"] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+
+  .field-label {
+    font-weight: 650;
+    font-size: 0.9375rem;
+  }
+  .field-help {
+    color: var(--muted);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+  .field-error {
+    color: var(--red-ink);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    display: flex;
+    gap: 0.375rem;
+    align-items: center;
+  }
+  .input {
+    width: 100%;
+    height: 3.25rem;
+    padding-inline: 1.25rem;
+    border-radius: 9999px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+    color: var(--ink);
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .input::placeholder {
+    color: var(--muted);
+  }
+  .input:focus {
+    outline: 2px solid var(--red-ink);
+    outline-offset: 2px;
+    border-color: var(--red-ink);
+  }
+  .input[aria-invalid="true"] {
+    border-color: var(--red-ink);
+  }
+  textarea.input {
+    height: auto;
+    min-height: 8rem;
+    padding-block: 0.9rem;
+    border-radius: var(--radius-box);
+    resize: vertical;
+  }
+  select.input {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.4rem) 55%,
+      calc(100% - 1.05rem) 55%;
+    background-size: 0.35rem 0.35rem;
+    background-repeat: no-repeat;
+    padding-right: 2.75rem;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 60;
+    background: var(--red);
+    color: var(--on-red);
+    padding: 0.6rem 1.1rem;
+    border-radius: 9999px;
+    font-weight: 650;
+  }
+  .skip-link:focus {
+    top: 0.75rem;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Z-index scale: header 40, dialogs 50, skip link 60. */
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--bg) 55%, transparent), transparent);
+    animation: shimmer 1.2s var(--ease-snap) infinite;
+  }
+}
